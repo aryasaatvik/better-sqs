@@ -1,0 +1,45 @@
+{
+  "name": "better-sqs",
+  "version": "0.1.0",
+  "description": "A TypeScript library that wraps AWS SQS with a Vercel Queue-like API",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "sqs",
+    "aws",
+    "queue",
+    "typescript",
+    "vercel-queue",
+    "serverless"
+  ],
+  "author": "Saatvik Arya",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-sqs": "^3.926.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.157",
+    "@types/node": "^22.18.10",
+    "tsdown": "^0.16.3",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
