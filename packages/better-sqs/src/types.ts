@@ -2,7 +2,6 @@
  * Better-SQS Type Definitions
  *
  * Generic, type-safe queue abstraction for AWS SQS
- * Inspired by Vercel Queue API
  */
 
 import type { SQSEvent } from "aws-lambda";
@@ -143,7 +142,7 @@ export interface SendOptions {
 
 /**
  * Handler result that can control retry behavior
- * Similar to Vercel Queue's timeoutSeconds pattern
+ * Similar to other queue libraries' retry patterns
  */
 export interface HandlerRetryResult {
   /**

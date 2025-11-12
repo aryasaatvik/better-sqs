@@ -1,6 +1,6 @@
 # Better-SQS
 
-A TypeScript library that wraps AWS SQS with a Vercel Queue-like API. Provides a simple, type-safe interface for SQS FIFO queues with built-in handler routing.
+Type-safe queues for AWS SQS. A simple, developer-friendly API with full TypeScript support.
 
 ## Features
 
@@ -9,7 +9,7 @@ A TypeScript library that wraps AWS SQS with a Vercel Queue-like API. Provides a
 - **Handler routing**: Automatically routes messages to handlers based on queue name
 - **FIFO support**: Built-in message grouping, deduplication, and batch failure handling
 - **Serverless-first**: Factory pattern with no global state - perfect for Lambda
-- **Vercel Queue compatibility**: Familiar API for teams already using Vercel Queue
+- **Simple API**: Familiar `send(topic, payload)` pattern
 - **Framework-agnostic**: Works with any AWS Lambda setup (SST, CDK, Serverless, etc.)
 - **Optional logger**: Accepts any logger interface (pino, winston, console, etc.)
 
@@ -183,7 +183,7 @@ await send("order-processing", { orderId: "123" }, {
 
 ## Handler Retry Logic
 
-Handlers can return a retry result to control visibility timeout (similar to Vercel Queue's `timeoutSeconds`):
+Handlers can return a retry result to control visibility timeout (similar to other queue libraries' retry patterns):
 
 ```typescript
 export const handler = createHandler({
@@ -302,23 +302,15 @@ const queue = createClient({ sqsClient: customClient });
 await queue.send("my-topic", { data: "example" }, { delaySeconds: 60 });
 ```
 
-## Comparison with Vercel Queue
-
-| Feature | Vercel Queue | Better-SQS |
-|---------|-------------|------------|
-| API Style | `send(topic, payload)` | `send(topic, payload)` ✅ |
-| Type Safety | Full TypeScript | Full TypeScript ✅ |
-| Handler Routing | `handleCallback()` | `createHandler()` ✅ |
-| FIFO Support | No | Yes ✅ |
-| Consumer Groups | Yes | No (SQS limitation) |
-| Framework | Vercel-specific | Framework-agnostic ✅ |
-| Infrastructure | Vercel-managed | AWS SQS ✅ |
-
 ## Limitations
 
 - **Consumer Groups**: SQS doesn't support consumer groups natively. Use separate queues or SQS message filtering if needed.
 - **Retry Timing**: SQS retry timing is controlled by queue configuration, not handler return values.
 - **Message Size**: SQS has a 256KB message size limit (payload must be serializable to JSON).
+
+## Acknowledgments
+
+Better-SQS was inspired by [@vercel/queue](https://www.npmjs.com/package/@vercel/queue)'s developer-friendly API design. We've adapted the pattern for AWS SQS with a focus on type safety and serverless-first architecture.
 
 ## License
 

@@ -6,7 +6,7 @@ This monorepo contains the Better-SQS library and example packages.
 
 ### [`better-sqs`](./packages/better-sqs)
 
-A TypeScript library that wraps AWS SQS with a Vercel Queue-like API. Provides a simple, type-safe interface for SQS FIFO queues with built-in handler routing.
+Type-safe queues for AWS SQS. A simple, developer-friendly API with full TypeScript support.
 
 **See the [package README](./packages/better-sqs/README.md) for full documentation.**
 

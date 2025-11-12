@@ -1,8 +1,8 @@
 /**
  * Better-SQS
  *
- * A TypeScript library that wraps AWS SQS with a Vercel Queue-like API.
- * Provides a simple, type-safe interface for SQS FIFO queues with built-in handler routing.
+ * Type-safe queues for AWS SQS.
+ * Provides a simple, developer-friendly API with full TypeScript support.
  *
  * @example Sending messages (standalone)
  * ```typescript

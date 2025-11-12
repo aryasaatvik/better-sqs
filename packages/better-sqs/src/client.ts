@@ -1,8 +1,8 @@
 /**
  * Better-SQS Client
  *
- * Provides a simple `send()` function that mimics Vercel Queue's API
- * but uses AWS SQS under the hood with full type safety and configurability.
+ * Provides a simple `send()` function for type-safe queue operations
+ * with AWS SQS under the hood.
  * Uses a factory pattern for serverless-first design with no global state.
  */
 

@@ -1,7 +1,7 @@
 {
   "name": "better-sqs",
   "version": "0.1.0",
-  "description": "A TypeScript library that wraps AWS SQS with a Vercel Queue-like API",
+  "description": "Type-safe queues for AWS SQS",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -25,7 +25,7 @@
     "aws",
     "queue",
     "typescript",
-    "vercel-queue",
+    "type-safe",
     "serverless"
   ],
   "author": "Saatvik Arya",

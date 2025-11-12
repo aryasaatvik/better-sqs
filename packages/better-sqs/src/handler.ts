@@ -2,7 +2,7 @@
  * Better-SQS Handler Builder
  *
  * Creates SQS Lambda handler function with routing logic
- * Mimics Vercel Queue's `handleCallback()` API but for SQS
+ * and type-safe message handling.
  */
 
 import type { SQSEvent, SQSRecord } from "aws-lambda";
@@ -65,7 +65,7 @@ function parseRecord<T = unknown>(record: SQSRecord): {
 /**
  * Create SQS Lambda handler function
  *
- * Mimics Vercel Queue's `handleCallback()` API but for SQS
+ * Provides type-safe message handling with automatic routing
  *
  * @param handlers - Handler configuration mapping topics to functions
  * @param config - Optional configuration (logger, etc.)
@@ -136,7 +136,7 @@ export function createHandler<
             metadata,
           );
 
-          // Handle retry result (similar to Vercel Queue's timeoutSeconds)
+          // Handle retry result (similar to other queue libraries' retry patterns)
           if (result && typeof result === "object" && "retryAfterSeconds" in result) {
             const retryResult = result as HandlerRetryResult;
             if (retryResult.retryAfterSeconds !== undefined) {
