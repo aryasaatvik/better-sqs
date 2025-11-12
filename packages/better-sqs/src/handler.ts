@@ -36,6 +36,7 @@ function extractQueueName(eventSourceArn: string): string {
 function parseRecord<T = unknown>(record: SQSRecord): {
   payload: T;
   metadata: MessageMetadata;
+  topic: string | null;
 } {
   let payload: T;
   try {
@@ -45,6 +46,9 @@ function parseRecord<T = unknown>(record: SQSRecord): {
       `Failed to parse message body as JSON: ${error instanceof Error ? error.message : String(error)}`,
     );
   }
+
+  // Extract topic from message attributes (preferred for routing)
+  const topic = record.messageAttributes?.topic?.stringValue || null;
 
   const metadata: MessageMetadata = {
     messageId: record.messageId,
@@ -59,7 +63,7 @@ function parseRecord<T = unknown>(record: SQSRecord): {
       : undefined,
   };
 
-  return { payload, metadata };
+  return { payload, metadata, topic };
 }
 
 /**
@@ -111,20 +115,26 @@ export function createHandler<
     await Promise.all(
       event.Records.map(async (record) => {
         try {
-          const { payload, metadata } = parseRecord(record);
+          const { payload, metadata, topic } = parseRecord(record);
+
+          // Determine routing key: prefer topic from message attributes, fall back to queue name
+          const routingKey = (topic || metadata.queueName) as TopicName;
 
           logger.debug?.(
-            `Processing record: ${metadata.messageId} from queue: ${metadata.queueName} (attempt ${metadata.receiveCount})`,
+            `Processing record: ${metadata.messageId} from queue: ${metadata.queueName}` +
+            (topic ? ` (topic: ${topic})` : '') +
+            ` (attempt ${metadata.receiveCount})`,
           );
 
-          // Route to appropriate handler based on queue name
-          const queueName = metadata.queueName as TopicName;
-          const handler = handlers[queueName];
+          // Route to appropriate handler based on topic (or queue name as fallback)
+          const handler = handlers[routingKey];
 
           if (!handler) {
             const availableHandlers = Object.keys(handlers).join(", ");
             logger.warn?.(
-              `No handler found for queue "${queueName}". Available handlers: ${availableHandlers}`,
+              `No handler found for routing key "${routingKey}". ` +
+              `Topic: ${topic || 'none'}, Queue: ${metadata.queueName}. ` +
+              `Available handlers: ${availableHandlers}`,
             );
             // Mark as success to prevent infinite retries for unknown queues
             return;
@@ -152,7 +162,9 @@ export function createHandler<
           }
 
           logger.info?.(
-            `Record processed successfully: ${metadata.messageId} from queue: ${metadata.queueName}`,
+            `Record processed successfully: ${metadata.messageId}` +
+            (topic ? ` (topic: ${topic})` : '') +
+            ` from queue: ${metadata.queueName}`,
           );
         } catch (error) {
           logger.error?.(

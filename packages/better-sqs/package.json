@@ -1,6 +1,6 @@
 {
   "name": "better-sqs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Type-safe queues for AWS SQS",
   "type": "module",
   "module": "./dist/index.js",
@@ -47,8 +47,5 @@
     "@types/node": "^22.18.10",
     "tsdown": "^0.16.3",
     "typescript": "^5.9.3"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
   }
 }
