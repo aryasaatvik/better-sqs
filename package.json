@@ -1,0 +1,19 @@
+{
+  "name": "better-sqs-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Monorepo for better-sqs and examples",
+  "scripts": {
+    "build": "pnpm -r --filter './packages/*' build",
+    "dev": "pnpm -r --filter './packages/*' dev",
+    "typecheck": "pnpm -r typecheck",
+    "clean": "pnpm -r clean"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}
